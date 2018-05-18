@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/mikemaddem/discord-bugjs/issues"
   },
-  "homepage": "https://github.com/mikemaddem/discord-bugjs#readme"
+  "homepage": "https://github.com/mikemaddem/discord-bugjs#readme",
+  "dependencies": {
+    "discord.js": "^11.3.2"
+  }
 }
