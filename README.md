@@ -13,3 +13,7 @@ Someone remind me to fill this out later. But I'd appreciate any help.
 * Trello integration
 * Local DB Storage (SQLITE)
 * Unique Ticket ID & Objects
+
+# Setup
+To get the bot to join the server you need to go to this link...
+discordapp.com/oauth2/authorize?client_id=(ID OF YOUR BOT)&scope=bot&permissions=0
