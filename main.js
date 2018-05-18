@@ -1,5 +1,5 @@
 /**
- * A ping pong bot, whenever you send "ping", it replies "pong".
+ * Send me all of  the shitty bugs
  */
 
 // Import the discord.js module
@@ -16,7 +16,8 @@ const config = require("./config.json");
  * received from Discord
  */
 client.on('ready', () => {
-    console.log('I am ready!');
+    console.log('Hit me with your worst bugs!');
+    console.log('No. Actually, dont hit me with bugs, thats gross');
 });
 
 // Create an event listener for messages
@@ -32,10 +33,21 @@ client.on('message', message => {
         message.channel.send('pong');
     }
 
-    if (command == 'src') {
+    if (command == 'src' || command == 'source') {
         // Send "pong" to the same channel
         message.channel.send('https://github.com/mikemaddem/discord-bugjs');
-        console.log("Sent source");
+    }
+    if (command == 'about'){
+        message.channel.send('A wise handsome young man by the name of Michael Madden is my creator, he created me' +
+            'to help other developers organize the bugs in their awful code.');
+        message.channel.send('Check him out @ mikemadden.me')
+    }
+    if (command == 'meme' || command == 'memes'){
+        message.channel.send('no');
+        message.channel.send('memes');
+        message.channel.send('for');
+        message.channel.send('you');
+        message.channel.send(':rofl:')
     }
 
 });
