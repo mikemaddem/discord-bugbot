@@ -29,13 +29,17 @@ client.on('message', message => {
     // check to see if the message is actually made for the bot
 
     if (command == 'ping') {
+        var number = parseInt(args);
 
-        message.channel.send('pong');
+        for(var i=0; i<number; i++){
+            message.channel.send('pong');
+        }
+        
     }
 
     if (command == 'src' || command == 'source') {
         // Send "pong" to the same channel
-        message.channel.send('https://github.com/mikemaddem/discord-bugjs');
+        message.channel.send('https://github.com/mikemaddem/discord-bugjs'+" "+ args);
     }
     if (command == 'about'){
         message.channel.send('A wise handsome young man by the name of Michael Madden is my creator, he created me' +
