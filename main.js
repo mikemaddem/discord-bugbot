@@ -11,11 +11,18 @@ const client = new Discord.Client();
 // import config
 const config = require("./config.json");
 
+const sqlite3 = require('sqlite3').verbose();
 /**
  * The ready event is vital, it means that only _after_ this will your bot start reacting to information
  * received from Discord
  */
 client.on('ready', () => {
+    let db = new sqlite3.Database('./db/main.db', sqlite3.OPEN_READWRITE, (err) => {
+        if (err) {
+          console.error(err.message);
+        }
+        console.log('Connected to main database.');
+      });
     console.log('Hit me with your worst bugs!');
     console.log('No. Actually, dont hit me with bugs, thats gross');
 });
