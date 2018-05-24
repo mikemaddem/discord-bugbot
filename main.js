@@ -23,6 +23,8 @@ client.on('ready', () => {
         }
         console.log('Connected to main database.');
       });
+    db.run("CREATE TABLE IF NOT EXISTS `bug_reports` (`id`	INTEGER PRIMARY KEY AUTOINCREMENT, `reported`	timestamp, `description`	BLOB, `approved`	INTEGER DEFAULT 0, `denied`	INTEGER DEFAULT 0, `reporter`	text DEFAULT 'Unknown', `open`	text DEFAULT 'Unknown')");
+    console.log("DB Setup properly");
     console.log('Hit me with your worst bugs!');
     console.log('No. Actually, dont hit me with bugs, thats gross');
 });
@@ -47,6 +49,9 @@ client.on('message', message => {
     if (command == 'src' || command == 'source') {
         // Send "pong" to the same channel
         message.channel.send('https://github.com/mikemaddem/discord-bugjs'+" "+ args);
+    }
+    if(comamnd == 'createissue'){
+
     }
     if(command == 'commands'){
         message.channel.send('All of my commands are...');
