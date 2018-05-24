@@ -41,6 +41,10 @@ client.on('message', message => {
         // Send "pong" to the same channel
         message.channel.send('https://github.com/mikemaddem/discord-bugjs'+" "+ args);
     }
+    if(command == 'commands'){
+        message.channel.send('All of my commands are...');
+        message.channel.send('about, src, meme,');
+    }
     if (command == 'about'){
         message.channel.send('A wise handsome young man by the name of Michael Madden is my creator, he created me' +
             'to help other developers organize the bugs in their awful code.');
