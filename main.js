@@ -12,21 +12,21 @@ const client = new Discord.Client();
 const config = require("./config.json");
 
 const sqlite3 = require('sqlite3').verbose();
-/**
- * The ready event is vital, it means that only _after_ this will your bot start reacting to information
- * received from Discord
- */
+let db = new sqlite3.Database('./db/main.db', sqlite3.OPEN_READWRITE, (err) => {
+    if (err) {
+      console.error(err.message);
+    }
+    console.log('Connected to main database.');
+  });
+
 client.on('ready', () => {
-    let db = new sqlite3.Database('./db/main.db', sqlite3.OPEN_READWRITE, (err) => {
-        if (err) {
-          console.error(err.message);
-        }
-        console.log('Connected to main database.');
-      });
-    db.run("CREATE TABLE IF NOT EXISTS `bug_reports` (`id`	INTEGER PRIMARY KEY AUTOINCREMENT, `reported`	timestamp, `description`	BLOB, `approved`	INTEGER DEFAULT 0, `denied`	INTEGER DEFAULT 0, `reporter`	text DEFAULT 'Unknown', `open`	text DEFAULT 'Unknown')");
+    
+    db.run("CREATE TABLE IF NOT EXISTS `bug_reports` (`id`	INTEGER PRIMARY KEY AUTOINCREMENT, `reported`	text, `description`	BLOB, `approved`	INTEGER DEFAULT 0, `denied`	INTEGER DEFAULT 0, `reporter`	text DEFAULT 'Unknown', `open`	text DEFAULT 'Unknown')");
     console.log("DB Setup properly");
+    console.log("--------------------------");
     console.log('Hit me with your worst bugs!');
     console.log('No. Actually, dont hit me with bugs, thats gross');
+    console.log("-------------------------------------");
 });
 
 // Create an event listener for messages
@@ -50,8 +50,12 @@ client.on('message', message => {
         // Send "pong" to the same channel
         message.channel.send('https://github.com/mikemaddem/discord-bugjs'+" "+ args);
     }
-    if(comamnd == 'createissue'){
-
+    if(command == 'createissue'){
+        var description = args
+        const datetime = new Date();
+        var reporter = message.author
+        db.run(`INSERT INTO bug_reports (description, reporter) VALUES (${description}, ${reporter})`);
+        db.close();        
     }
     if(command == 'commands'){
         message.channel.send('All of my commands are...');
