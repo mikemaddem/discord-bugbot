@@ -2,10 +2,8 @@
  * Send me all of  the shitty bugs
  */
 
-// Import the discord.js module
 const Discord = require('discord.js');
 
-// Create an instance of a Discord client
 const client = new Discord.Client();
 
 // import config
@@ -29,7 +27,6 @@ client.on('ready', () => {
     console.log("-------------------------------------");
 });
 
-// Create an event listener for messages
 client.on('message', message => {
 
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
