@@ -51,8 +51,7 @@ client.on('message', message => {
         var description = args
         const datetime = new Date();
         var reporter = message.author
-        db.run(`INSERT INTO bug_reports (description, reporter) VALUES (${description}, ${reporter})`);
-        db.close();        
+        db.run(`INSERT INTO bug_reports (description, reporter) VALUES ("${description}", "${reporter}")`);
     }
     if(command == 'commands'){
         message.channel.send('All of my commands are...');
