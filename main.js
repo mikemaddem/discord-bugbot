@@ -12,7 +12,7 @@ const client = new Discord.Client();
 const config = require("./config.json");
 
 const sqlite3 = require('sqlite3').verbose();
-let db = new sqlite3.Database('./db/main.db', sqlite3.OPEN_READWRITE, (err) => {
+let db = new sqlite3.Database('./db/main.sqlite3', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
       console.error(err.message);
     }
