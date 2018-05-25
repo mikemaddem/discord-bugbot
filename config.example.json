@@ -1,6 +1,4 @@
 {
   "token": "INSERT THE TOKEN FOR THE BOT USER THAT YOU FIND HERE",
-  // https://discordapp.com/developers/applications/me/
-  // DO NOT MAKE THIS TOKEN PUBLIC UNDER ANY CIRCUMSTANCES
   "prefix": "!"
 }
