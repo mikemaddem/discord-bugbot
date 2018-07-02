@@ -132,10 +132,8 @@ client.on('message', message => {
         var system = reportinfo.system;
         console.log(reporter+" just submitted a report with the following info ");
         console.log(reportinfo);
-        var values = Array.from(reportinfo);
-        let placeholders = values.map((values) => '(?)').join(',');
-
-        db.run('INSERT INTO bug_reports(reporter, description, steps, client_info, user_system) VALUES '+placeholders);
+        
+        db.run(`INSERT INTO bug_reports(reporter, description, steps, client_info, user_system) VALUES("${reporter}", "${description}", "${steps}", "${client}", "${system}")`);
 
     }
 
