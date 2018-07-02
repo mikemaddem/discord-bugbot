@@ -32,6 +32,60 @@ let db = new sqlite3.Database('./db/main.sqlite3', sqlite3.OPEN_READWRITE, (err)
     console.log('Connected to the bugs SQlite database.');
 });
 
+function reportParser(command) {
+    let i, l;
+    let output = {};
+    let opt = 0;
+    let cmdReader = false;
+    let stringReader = false;
+    let key = '';
+    let val = '';
+
+    // trim the command of extra spaces
+    command = command.trim();
+
+    // loop through the string once to achieve O(n) avg runtime
+    for (i = 0, l = command.length; i < l; i++) {
+    
+        // if " is met the first time then we read string for value in object
+        // when we hit " again or end quote then clear key and flip string reader off or toggle
+        if (command[i] === '"') {
+            if (stringReader)
+                key = '';
+            stringReader =! stringReader;
+            continue;
+        }
+
+        // while string reader on we append to key value pair
+        if (stringReader) {
+            output[key] += command[i];
+            continue;
+        }
+
+        // hyphen found prep for reader +1
+        if (command[i] === '-') {
+            opt++;
+            continue;
+        }
+
+        // after two hyphen hits and a space we end out key reading
+        if (opt === 2 && command[i] === ' ') {
+            opt = 0;
+            output[key] = '';
+            continue;
+        }
+
+        // after two hyphen hits we read the characters to build your key
+        if (opt === 2) {
+            key += command[i];
+            continue;
+        }
+    }
+
+    return output;
+}
+
+
 
 /**
  * The ready event is vital, it means that only _after_ this will your bot start reacting to information
@@ -71,7 +125,7 @@ client.on('message', message => {
     if (command == 'report'){
         // ok shit we have to do some for real shit.
         
-
+        message.channel.send(reportParser(message.content));
     }
     else{
         message.channel.send('Shit Mike didnt teach me this yet. Blame him not me')
