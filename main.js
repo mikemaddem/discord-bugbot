@@ -130,9 +130,9 @@ client.on('message', message => {
         var steps = reportinfo.step1 + " " + reportinfo.step2
         var client = reportinfo.client;
         var system = reportinfo.system;
-       console.log(reporter+" just submitted a report with the following info ");
-       console.log(reportinfo);
-       db.run(`INSERT INTO bug_reports(reporter, description, steps, client_info, user_system) VALUES(reporter), (description), (`)
+        console.log(reporter+" just submitted a report with the following info ");
+        console.log(reportinfo);
+        db.run(`INSERT INTO bug_reports(reporter, description, steps, client_info, user_system) VALUES(reporter), (description), (steps), (client), (system)`)
 
         // message.channel.send(reportinfo)
         //.then(i => {  console.log(i); })
