@@ -11,6 +11,8 @@ const client = new Discord.Client();
 // import config
 const config = require("./config.json");
 
+var commands = [];
+
 startupsql = `CREATE TABLE IF NOT EXISTS bug_reports (
     bug_id integer PRIMARY KEY AUTOINCREMENT,
     reporter text NOT NULL,
@@ -86,6 +88,11 @@ function reportParser(command) {
 }
 
 
+commands.push('src');
+commands.push('source');
+commands.push('about');
+commands.push('meme');
+commands.push('report');
 
 /**
  * The ready event is vital, it means that only _after_ this will your bot start reacting to information
@@ -101,35 +108,37 @@ client.on('message', message => {
 
     
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-    const command = args.shift().toLowerCase();
+    const botcommand = args.shift().toLowerCase();
 
-    // check to see if the message is actually made for the bot
-
-    if (command == 'ping') {
-
-        message.channel.send('pong');
-    }
-
-    if (command == 'src' || command == 'source') {
+    if (botcommand == 'src' || botcommand == 'source') {
         // Send "pong" to the same channel
         message.channel.send('https://github.com/mikemaddem/discord-bugjs');
     }
-    if (command == 'about'){
+    if (botcommand == 'about'){
         message.channel.send('A wise handsome young man by the name of Michael Madden is my creator, he created me' +
             'to help other developers organize the bugs in their awful code.');
         message.channel.send('Check him out @ mikemadden.me')
     }
-    if (command == 'meme' || command == 'memes'){
+    if (botcommand == 'meme'){
         message.channel.send(':flag_ru: I have strict orders to stop memes :flag_ru: ');
     }
-    if (command == 'report'){
+    if (botcommand == 'report'){
         // ok shit we have to do some for real shit.
-        
-        message.channel.send(reportParser(message.content));
-    }
-    else{
-        message.channel.send('Shit Mike didnt teach me this yet. Blame him not me')
-    }
+        var reportinfo = reportParser(message.content);
+        var reporter = message.author;
+        var description = reportinfo.description;
+        var steps = reportinfo.step1 + " " + reportinfo.step2
+        var client = reportinfo.client;
+        var system = reportinfo.system;
+       console.log(reporter+" just submitted a report with the following info ");
+       console.log(reportinfo);
+       db.run(`INSERT INTO bug_reports(reporter, description, steps, client_info, user_system) VALUES(reporter), (description), (`)
+
+        // message.channel.send(reportinfo)
+        //.then(i => {  console.log(i); })
+        //.catch(e => { throw e; })
+            }
+    
 
 });
 
