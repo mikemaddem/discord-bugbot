@@ -21,7 +21,8 @@ startupsql = `CREATE TABLE IF NOT EXISTS bug_reports (
     client_info text NOT NULL,
     user_system text NOT NULL,
     approved integer DEFAULT 0,
-    votes integer DEFAULT 0);`;
+    votes integer DEFAULT 0,
+    date_submitted integer NOT NULL);`;
 
 const sqlite3 = require('sqlite3').verbose();
 let db = new sqlite3.Database('./db/main.sqlite3', sqlite3.OPEN_READWRITE, (err) => {
@@ -48,7 +49,7 @@ function reportParser(command) {
 
     // loop through the string once to achieve O(n) avg runtime
     for (i = 0, l = command.length; i < l; i++) {
-    
+
         // if " is met the first time then we read string for value in object
         // when we hit " again or end quote then clear key and flip string reader off or toggle
         if (command[i] === '"') {
@@ -106,7 +107,7 @@ client.on('ready', () => {
 // Create an event listener for messages
 client.on('message', message => {
 
-    
+
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     const botcommand = args.shift().toLowerCase();
 
@@ -130,11 +131,14 @@ client.on('message', message => {
         var steps = reportinfo.step1 + " " + reportinfo.step2
         var client = reportinfo.client;
         var system = reportinfo.system;
+        var date = new Date();
         console.log(reporter+" just submitted a report with the following info ");
         console.log(reportinfo);
-        
-        db.run(`INSERT INTO bug_reports(reporter, description, steps, client_info, user_system) VALUES("${reporter}", "${description}", "${steps}", "${client}", "${system}")`);
 
+        db.run(`INSERT INTO bug_reports(reporter, description, steps, client_info, user_system, date_submitted) VALUES("${reporter}", "${description}", "${steps}", "${client}", "${system}", "${date}")`);
+        // grab the value of the the report id based on the last one created
+        //var bugid = db.run(`SELECT bug_id FROM bug_reports WHERE bug_id = (SELECT MAX(bug_id) FROM bug_reports)`);
+        //console.log('bugid = '+bugid)
     }
 
 });
