@@ -1,4 +1,5 @@
 {
   "token": "INSERT THE TOKEN FOR THE BOT USER THAT YOU FIND HERE",
   "prefix": "!"
+  "approval_channel": "INSERT THE ID OF THE CHANNEL THE BOT WILL TAKE A"
 }
