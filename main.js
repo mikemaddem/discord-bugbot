@@ -128,7 +128,7 @@ client.on('message', message => {
         var reportinfo = reportParser(message.content);
         var reporter = message.author;
         var description = reportinfo.description;
-        var steps = reportinfo.step1 + " " + reportinfo.step2
+        var steps = reportinfo.steps
         var client = reportinfo.client;
         var system = reportinfo.system;
         var date = new Date();
@@ -139,6 +139,48 @@ client.on('message', message => {
         // grab the value of the the report id based on the last one created
         //var bugid = db.run(`SELECT bug_id FROM bug_reports WHERE bug_id = (SELECT MAX(bug_id) FROM bug_reports)`);
         //console.log('bugid = '+bugid)
+        message.channel.send({
+            "content": "A new Bug Report has been created",
+            "embed": {
+              "title": "Bug Report #",
+              "description": description,
+              "color": 5124982,
+              "timestamp": date,
+              "footer": {
+                "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
+                "text": "Bug Bot"
+              },
+              "thumbnail": {
+                "url": "https://cdn.discordapp.com/embed/avatars/0.png"
+              },
+              "author": {
+                "name": "Bug Bot",
+                "url": "https://mikemadden.me",
+                "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png"
+              },
+              "fields": [
+                {
+                    "name": "Reporter",
+                    "value": reporter.toString()
+                },
+                {
+                  "name": "Steps to reproduce",
+                  "value": steps
+                },
+                {
+                  "name": "Client Settings",
+                  "value": client
+                },
+                {
+                  "name": "System Settings",
+                  "value": system
+                }
+                
+              ]
+            }
+          });
+        
+        message.delete("5");
     }
 
 });
