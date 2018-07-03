@@ -182,6 +182,12 @@ client.on('message', message => {
         
         message.delete("5");
     }
+    if(botcommand == 'approve'){
+        // we need to add a vote to the report #
+    }
+    if(botcommand == 'deny'){
+        // we need to subtract a vote
+    }
 
 });
 
