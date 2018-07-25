@@ -132,12 +132,12 @@ client.on('message', message => {
     if (botcommand == 'meme'){
         message.channel.send(':flag_ru: I have strict orders to stop memes :flag_ru: ');
     }
-    if (botcommand == 'report'){
+    if (botcommand == 'report' && message.channel.id == config.report_channel){
         // ok shit we have to do some for real shit.
         var reportinfo = reportParser(message.content);
         var reporter = message.author;
         var description = reportinfo.description;
-        var steps = reportinfo.steps
+        var steps = reportinfo.step1+reportinfo.step2
         var client = reportinfo.client;
         var system = reportinfo.system;
         var date = new Date();
