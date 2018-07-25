@@ -8,8 +8,17 @@ const Discord = require('discord.js');
 // Create an instance of a Discord client
 const client = new Discord.Client();
 
+var fs = require('fs')
+
 // import config
 const config = require("./config.json");
+
+// check if the db file exists
+fs.existsSync('db/main.sqlite3', function (err, file) {
+    if (err) throw err;
+    console.log('DB File found! Rejoice to all of mankind!');
+  });
+
 
 var commands = [];
 
@@ -123,12 +132,12 @@ client.on('message', message => {
     if (botcommand == 'meme'){
         message.channel.send(':flag_ru: I have strict orders to stop memes :flag_ru: ');
     }
-    if (botcommand == 'report'){
+    if (botcommand == 'report' && message.channel.id == config.report_channel){
         // ok shit we have to do some for real shit.
         var reportinfo = reportParser(message.content);
         var reporter = message.author;
         var description = reportinfo.description;
-        var steps = reportinfo.steps
+        var steps = reportinfo.step1+reportinfo.step2
         var client = reportinfo.client;
         var system = reportinfo.system;
         var date = new Date();
@@ -180,7 +189,13 @@ client.on('message', message => {
             }
           });
         
-        message.delete("5");
+        message.delete("30");
+    }
+    if(botcommand == 'approve' && message.channel.id == config.approval_channel){
+        // we need to add a vote to the report #, they are in the correct channel
+    }
+    if(botcommand == 'deny' && message.channel.id == config.approval_channel){
+        // we need to subtract a vote, they are in the correct channel
     }
 
 });

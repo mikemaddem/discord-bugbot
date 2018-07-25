@@ -25,5 +25,7 @@ discordapp.com/oauth2/authorize?client_id=ID OF YOUR BOT&scope=bot&permissions=0
 * Install requirements with ```npm install```
 * Create a bot on discord.com - and create a bot user
 * Rename the config.example.json to config.json and paste the bot token into the specified field in the config.
-* Authenticate that bot to join one of your servers.
+* Setup a private channel with your specified permissions for users to approve bug reports, copy and paste the channel id into approval_channel in your config.json
+* Setup a public channel where users will report bugs, copy and paste the channel id into report_channel in your config.json
+* Authenticate that bot to join one of your servers, via the discord developer panel.
 * Start the bot with a simple ```node main.js```
