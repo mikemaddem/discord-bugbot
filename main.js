@@ -189,7 +189,7 @@ client.on('message', message => {
             }
           });
         
-        message.delete("5");
+        message.delete("30");
     }
     if(botcommand == 'approve'){
         // we need to add a vote to the report #
