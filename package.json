@@ -1,6 +1,6 @@
 {
   "name": "discord-bugjs",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A discord bot that helps you SMASH bugs",
   "main": "main.js",
   "scripts": {
