@@ -191,11 +191,11 @@ client.on('message', message => {
         
         message.delete("30");
     }
-    if(botcommand == 'approve'){
-        // we need to add a vote to the report #
+    if(botcommand == 'approve' && message.channel.id == config.approval_channel){
+        // we need to add a vote to the report #, they are in the correct channel
     }
-    if(botcommand == 'deny'){
-        // we need to subtract a vote
+    if(botcommand == 'deny' && message.channel.id == config.approval_channel){
+        // we need to subtract a vote, they are in the correct channel
     }
 
 });
