@@ -8,8 +8,17 @@ const Discord = require('discord.js');
 // Create an instance of a Discord client
 const client = new Discord.Client();
 
+var fs = require('fs')
+
 // import config
 const config = require("./config.json");
+
+// check if the db file exists
+fs.open('db/main.sqlite3', 'w', function (err, file) {
+    if (err) throw err;
+    console.log('DB File found! Rejoice to all of mankind!');
+  });
+
 
 var commands = [];
 
