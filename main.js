@@ -136,6 +136,13 @@ client.on('message', async message => {
         // Send "pong" to the same channel
         message.channel.send('https://github.com/mikemaddem/discord-bugjs');
     }
+    if(botcommand == 'commands' || botcommand == 'command'){
+        var comout = ""
+        for(var i=0; i<=commands.length; i++){
+            comout = comout+" "+commands[i]   
+        }
+        message.channel.send(comout)
+    }
     if (botcommand == 'about'){
         message.channel.send('A wise handsome young man by the name of Michael Madden is my creator, he created me' +
             'to help other developers organize the bugs in their awful code.');
