@@ -165,55 +165,55 @@ client.on('message', message => {
             // get the last insert id
             reportid = `${this.lastID}`;
             console.log(`A row has been inserted with rowid ${this.lastID}`);
-          });
+            message.channel.send({
+                "content": "A new Bug Report has been created",
+                "embed": {
+                  "title": "Bug Report #"+`${this.lastID}`,
+                  "description": description,
+                  "color": 5124982,
+                  "timestamp": date,
+                  "footer": {
+                    "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
+                    "text": "Bug Bot"
+                  },
+                  "thumbnail": {
+                    "url": "https://cdn.discordapp.com/embed/avatars/0.png"
+                  },
+                  "author": {
+                    "name": "Bug Bot",
+                    "url": "https://mikemadden.me",
+                    "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png"
+                  },
+                  "fields": [
+                    {
+                        "name": "Reporter",
+                        "value": reporter.toString()
+                    },
+                    {
+                      "name": "Steps to reproduce",
+                      "value": steps
+                    },
+                    {
+                      "name": "Client Settings",
+                      "value": client
+                    },
+                    {
+                      "name": "System Settings",
+                      "value": system
+                    }
+                    
+                  ]
+                }
+              });
+        });
         //var id = db.lastInsertRowId;
         // grab the value of the the report id based on the last one created
         //var bugid = db.run(`SELECT bug_id FROM bug_reports WHERE bug_id = (SELECT MAX(bug_id) FROM bug_reports)`);
         //console.log('bugid = '+bugid)
-        message.channel.send({
-            "content": "A new Bug Report has been created",
-            "embed": {
-              "title": "Bug Report #"+reportid,
-              "description": description,
-              "color": 5124982,
-              "timestamp": date,
-              "footer": {
-                "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
-                "text": "Bug Bot"
-              },
-              "thumbnail": {
-                "url": "https://cdn.discordapp.com/embed/avatars/0.png"
-              },
-              "author": {
-                "name": "Bug Bot",
-                "url": "https://mikemadden.me",
-                "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png"
-              },
-              "fields": [
-                {
-                    "name": "Reporter",
-                    "value": reporter.toString()
-                },
-                {
-                  "name": "Steps to reproduce",
-                  "value": steps
-                },
-                {
-                  "name": "Client Settings",
-                  "value": client
-                },
-                {
-                  "name": "System Settings",
-                  "value": system
-                }
-                
-              ]
-            }
-          });
+        
         //reportid = reportid.parseInt()
         message.delete("30");
-        console.log(reportid)
-    }
+        }
     if(botcommand == 'approve' && message.channel.id == config.approval_channel){
         // we need to add a vote to the report #, they are in the correct channel
     }
