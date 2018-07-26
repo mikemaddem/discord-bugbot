@@ -123,7 +123,7 @@ client.on('ready', () => {
 });
 
 // Create an event listener for messages
-client.on('message', message => {
+client.on('message', async message => {
 
 
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
@@ -212,7 +212,7 @@ client.on('message', message => {
         //console.log('bugid = '+bugid)
         
         //reportid = reportid.parseInt()
-        message.delete("30");
+        message.delete("15000");
         }
     if(botcommand == 'approve' && message.channel.id == config.approval_channel){
         // we need to add a vote to the report #, they are in the correct channel
@@ -220,7 +220,21 @@ client.on('message', message => {
     if(botcommand == 'deny' && message.channel.id == config.approval_channel){
         // we need to subtract a vote, they are in the correct channel
     }
-
+    if(botcommand === "purge") {
+        // This command removes all messages from all users in the channel, up to 100.
+        
+        // get the delete count, as an actual number.
+        const deleteCount = parseInt(args[0], 10);
+        
+        // Ooooh nice, combined conditions. <3
+        if(!deleteCount || deleteCount < 2 || deleteCount > 100)
+          return message.reply("Please provide a number between 2 and 100 for the number of messages to delete");
+        
+        // So we get our messages, and delete them. Simple enough, right?
+        const fetched = await message.channel.fetchMessages({limit: deleteCount});
+        message.channel.bulkDelete(fetched)
+          .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
+      }
 });
 
 // Log our bot in using the token from https://discordapp.com/developers/applications/me
