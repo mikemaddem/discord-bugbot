@@ -154,10 +154,10 @@ client.on('message', message => {
         var client = reportinfo.client;
         var system = reportinfo.system;
         var date = new Date();
-        var reportid = "";
+        var reportid;
         console.log(reporter+" just submitted a report with the following info ");
         console.log(reportinfo);
-        var insert = 'INSERT INTO bug_reports(reporter, description, steps, client_info, user_system, date_submitted) VALUES("${reporter}", "${description}", "${steps}", "${client}", "${system}", "${date}")';
+        var insert = `INSERT INTO bug_reports(reporter, description, steps, client_info, user_system, date_submitted) VALUES("${reporter}", "${description}", "${steps}", "${client}", "${system}", "${date}")`;
         db.run(insert, function(err) {
             if (err) {
               return console.log(err.message);
