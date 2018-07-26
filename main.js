@@ -112,6 +112,9 @@ commands.push('source');
 commands.push('about');
 commands.push('meme');
 commands.push('report');
+commands.push('approve');
+commands.push('deny')
+commands.push('purge')
 
 /**
  * The ready event is vital, it means that only _after_ this will your bot start reacting to information
