@@ -15,9 +15,18 @@ const config = require("./config.json");
 
 // check if the db file exists
 fs.existsSync('db/main.sqlite3', function (err, file) {
-    if (err) throw err;
+    if (err){ 
+        console.log('Error locating the db file')
+        fs.writeFile('db/main.sqlite3', (err) => {
+            if (err) throw err;
+        
+            console.log("The db file was has been created!");
+        }); 
+        //throw err
+        }
+    else {
     console.log('DB File found! Rejoice to all of mankind!');
-  });
+  }});
 
 
 var commands = [];
@@ -132,6 +141,10 @@ client.on('message', message => {
     if (botcommand == 'meme'){
         message.channel.send(':flag_ru: I have strict orders to stop memes :flag_ru: ');
     }
+    if(botcommand == 'report' && message.channel.id != config.report_channel){
+        message.channel.send('An error has occured, you are trying to report an issue outside of the specified channel.')
+        message.channel.send('Please contact the discord server adminstrators with any questions')
+    }
     if (botcommand == 'report' && message.channel.id == config.report_channel){
         // ok shit we have to do some for real shit.
         var reportinfo = reportParser(message.content);
@@ -141,17 +154,26 @@ client.on('message', message => {
         var client = reportinfo.client;
         var system = reportinfo.system;
         var date = new Date();
+        var reportid = "";
         console.log(reporter+" just submitted a report with the following info ");
         console.log(reportinfo);
-
-        db.run(`INSERT INTO bug_reports(reporter, description, steps, client_info, user_system, date_submitted) VALUES("${reporter}", "${description}", "${steps}", "${client}", "${system}", "${date}")`);
+        var insert = 'INSERT INTO bug_reports(reporter, description, steps, client_info, user_system, date_submitted) VALUES("${reporter}", "${description}", "${steps}", "${client}", "${system}", "${date}")';
+        db.run(insert, function(err) {
+            if (err) {
+              return console.log(err.message);
+            }
+            // get the last insert id
+            reportid = `${this.lastID}`;
+            console.log(`A row has been inserted with rowid ${this.lastID}`);
+          });
+        //var id = db.lastInsertRowId;
         // grab the value of the the report id based on the last one created
         //var bugid = db.run(`SELECT bug_id FROM bug_reports WHERE bug_id = (SELECT MAX(bug_id) FROM bug_reports)`);
         //console.log('bugid = '+bugid)
         message.channel.send({
             "content": "A new Bug Report has been created",
             "embed": {
-              "title": "Bug Report #",
+              "title": "Bug Report #"+reportid,
               "description": description,
               "color": 5124982,
               "timestamp": date,
@@ -188,8 +210,9 @@ client.on('message', message => {
               ]
             }
           });
-        
+        //reportid = reportid.parseInt()
         message.delete("30");
+        console.log(reportid)
     }
     if(botcommand == 'approve' && message.channel.id == config.approval_channel){
         // we need to add a vote to the report #, they are in the correct channel
