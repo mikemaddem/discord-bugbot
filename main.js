@@ -170,76 +170,124 @@ client.on('message', async message => {
         var insert = `INSERT INTO bug_reports(reporter, description, steps, client_info, user_system, date_submitted) VALUES("${reporter}", "${description}", "${steps}", "${client}", "${system}", "${date}")`;
         db.run(insert, function(err) {
             if (err) {
+              message.channel.send('A Database error has occured, the stupid humans should fix this soon')
               return console.log(err.message);
             }
             // get the last insert id
             reportid = `${this.lastID}`;
             console.log(`A row has been inserted with rowid ${this.lastID}`);
-            message.channel.send({
-                "content": "A new Bug Report has been created",
-                "embed": {
-                  "title": "Bug Report #"+`${this.lastID}`,
-                  "description": description,
-                  "color": 5124982,
-                  "timestamp": date,
-                  "footer": {
-                    "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
-                    "text": "Bug Bot"
-                  },
-                  "thumbnail": {
-                    "url": "https://cdn.discordapp.com/embed/avatars/0.png"
-                  },
-                  "author": {
-                    "name": "Bug Bot",
-                    "url": "https://mikemadden.me",
-                    "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png"
-                  },
-                  "fields": [
-                    {
-                        "name": "Reporter",
-                        "value": reporter.toString()
+            try {
+              message.channel.send({
+                  "content": "A new Bug Report has been created",
+                  "embed": {
+                    "title": "Bug Report #"+`${this.lastID}`,
+                    "description": description,
+                    "color": 5124982,
+                    "timestamp": date,
+                    "footer": {
+                      "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
+                      "text": "Bug Bot"
                     },
-                    {
-                      "name": "Steps to reproduce",
-                      "value": steps
+                    "thumbnail": {
+                      "url": "https://cdn.discordapp.com/embed/avatars/0.png"
                     },
-                    {
-                      "name": "Client Settings",
-                      "value": client
+                    "author": {
+                      "name": "Bug Bot",
+                      "url": "https://mikemadden.me",
+                      "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png"
                     },
-                    {
-                      "name": "System Settings",
-                      "value": system
-                    }
-                    
-                  ]
-                }
-              });
+                    "fields": [
+                      {
+                          "name": "Reporter",
+                          "value": reporter.toString()
+                      },
+                      {
+                        "name": "Steps to reproduce",
+                        "value": steps
+                      },
+                      {
+                        "name": "Client Settings",
+                        "value": client
+                      },
+                      {
+                        "name": "System Settings",
+                        "value": system
+                      }
+
+                    ]
+                  }
+                });
+
+            } catch (e) {
+                console.log(e);
+                message.channel.send("An error has occured, and I've notified the humans so they can fix it")
+            }
         });
         //var id = db.lastInsertRowId;
         // grab the value of the the report id based on the last one created
         //var bugid = db.run(`SELECT bug_id FROM bug_reports WHERE bug_id = (SELECT MAX(bug_id) FROM bug_reports)`);
         //console.log('bugid = '+bugid)
-        
+
         //reportid = reportid.parseInt()
         message.delete("15000");
         }
+    if(botcommand == 'approve' && message.channel.id != config.approval_channel){
+        message.channel.send('Sorry I have been instructed to not take commands from this channel')
+    }
     if(botcommand == 'approve' && message.channel.id == config.approval_channel){
         // we need to add a vote to the report #, they are in the correct channel
+        let bugid = args[0]
+        var votes
+        bugid = Number(bugid)
+        var getsql = `SELECT votes FROM bug_reports WHERE bug_id = ?`
+        try{ db.get(getsql, [bugid], (err, row) => {
+          if(err){
+            return console.error(err.message)
+          }
+          //return row
+            //? console.log(row.votes)
+            //: console.log('No row was found :( ')
+            votes = `${row.votes}`
+            console.log(votes)
+        })}
+        catch(e) { 
+            message.channel.send('An error has occured with counting your vote, please yell at my human creator to fix me')
+        }
+        finally{
+
+        
+        
+        votes = Number(votes)
+        var newvotes = votes + 1;
+        var updatesql = `UPDATE bug_reports SET votes = ? where bug_id = ?;`
+        db.run(updatesql, newvotes, bugid, function(err) {
+          if (err) {
+            return console.error(err.message);
+          }
+          console.log(`Row(s) updated: ${this.changes}`);
+
+        });
+    }
+    }
+    if(botcommand == 'deny' && message.channel.id != config.approval_channel){
+        message.channel.send('Sorry I have been instructed to not take commands from this channel')
     }
     if(botcommand == 'deny' && message.channel.id == config.approval_channel){
         // we need to subtract a vote, they are in the correct channel
+        bugid = args[0]
+        bugid = Number(bugid)
+
     }
     if(botcommand === "purge") {
         // This command removes all messages from all users in the channel, up to 100.
-        
+
         // get the delete count, as an actual number.
         const deleteCount = parseInt(args[0], 10);
-        
+
         // Ooooh nice, combined conditions. <3
         if(!deleteCount || deleteCount < 2 || deleteCount > 100)
           return message.reply("Please provide a number between 2 and 100 for the number of messages to delete");
-        
+
         // So we get our messages, and delete them. Simple enough, right?
         const fetched = await message.channel.fetchMessages({limit: deleteCount});
         message.channel.bulkDelete(fetched)
