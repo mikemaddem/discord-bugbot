@@ -15,13 +15,13 @@ const config = require("./config.json");
 
 // check if the db file exists
 fs.existsSync('db/main.sqlite3', function (err, file) {
-    if (err){ 
+    if (err){
         console.log('Error locating the db file')
         fs.writeFile('db/main.sqlite3', (err) => {
             if (err) throw err;
-        
+
             console.log("The db file was has been created!");
-        }); 
+        });
         //throw err
         }
     else {
@@ -45,7 +45,7 @@ startupsql = `CREATE TABLE IF NOT EXISTS bug_reports (
 const sqlite3 = require('sqlite3').verbose();
 let db = new sqlite3.Database('./db/main.sqlite3', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
-        return console.error(err.message);
+        throw err
     }
     else{
         db.run(startupsql);
@@ -139,7 +139,7 @@ client.on('message', async message => {
     if(botcommand == 'commands' || botcommand == 'command'){
         var comout = ""
         for(var i=0; i<=commands.length; i++){
-            comout = comout+" "+commands[i]   
+            comout = comout+" "+commands[i]
         }
         message.channel.send(comout)
     }
@@ -154,6 +154,9 @@ client.on('message', async message => {
     if(botcommand == 'report' && message.channel.id != config.report_channel){
         message.channel.send('An error has occured, you are trying to report an issue outside of the specified channel.')
         message.channel.send('Please contact the discord server adminstrators with any questions')
+    }
+    if (botcommand == 'report' && message.channel.id != config.report_channel){
+        message.channel.send('Sorry I have been instructed to not take commands from this channel')
     }
     if (botcommand == 'report' && message.channel.id == config.report_channel){
         // ok shit we have to do some for real shit.
@@ -237,37 +240,36 @@ client.on('message', async message => {
     if(botcommand == 'approve' && message.channel.id == config.approval_channel){
         // we need to add a vote to the report #, they are in the correct channel
         let bugid = args[0]
-        var votes
+        var votes = 0;
         bugid = Number(bugid)
         var getsql = `SELECT votes FROM bug_reports WHERE bug_id = ?`
-        try{ db.get(getsql, [bugid], (err, row) => {
-          if(err){
+        
+        db.get(getsql, [bugid], (err, row) => {
+            
+            if(err){
+            message.channel.send('An error has occured with counting your vote, please yell at my human creator to fix me')        
             return console.error(err.message)
-          }
-          //return row
+            }
+            votes = row.votes
+            console.log('Votes'+votes);
+            votes = (votes === null) ? 0 : votes;
+            var newvotes = votes + 1;
+            console.log('new votes', newvotes)
+            var updatesql = `UPDATE bug_reports SET votes = ? where bug_id = ${bugid};`
+            db.run(updatesql, newvotes, function(err) {
+            if (err) {
+                return console.error(err.message);
+            }
+            console.log(`Row(s) updated: ${this.changes}`);
+
+            });
+
+            //return row
             //? console.log(row.votes)
             //: console.log('No row was found :( ')
-            votes = `${row.votes}`
-            console.log(votes)
-        })}
-        catch(e) { 
-            message.channel.send('An error has occured with counting your vote, please yell at my human creator to fix me')
-        }
-        finally{
-
-        
-        
-        votes = Number(votes)
-        var newvotes = votes + 1;
-        var updatesql = `UPDATE bug_reports SET votes = ? where bug_id = ?;`
-        db.run(updatesql, newvotes, bugid, function(err) {
-          if (err) {
-            return console.error(err.message);
-          }
-          console.log(`Row(s) updated: ${this.changes}`);
-
-        });
-    }
+            votes =+ row.votes
+            console.log('Votes == ',votes)
+        })
     }
     if(botcommand == 'deny' && message.channel.id != config.approval_channel){
         message.channel.send('Sorry I have been instructed to not take commands from this channel')
