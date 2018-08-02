@@ -1,21 +1,21 @@
 {
-  "name": "discord-bugjs",
+  "name": "discord-bugbot",
   "version": "0.0.5",
-  "description": "A discord bot that helps you SMASH bugs",
+  "description": "A discord bot that helps you manage community driven bug reports",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mikemaddem/discord-bugjs.git"
+    "url": "git+https://github.com/mikemaddem/discord-bugbot.git"
   },
   "author": "Michael Madden",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mikemaddem/discord-bugjs/issues"
+    "url": "https://github.com/mikemaddem/discord-bugbot/issues"
   },
-  "homepage": "https://github.com/mikemaddem/discord-bugjs#readme",
+  "homepage": "https://github.com/mikemaddem/discord-bugbot#readme",
   "dependencies": {
     "discord.js": "^11.3.2",
     "sqlite": "^2.9.2"

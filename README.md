@@ -1,4 +1,4 @@
-# The future is bright! Rejoice for Discord BugJS has arrived!
+# The future is bright! Rejoice for Discord BugBot has arrived!
 What does this amazing piece of software do for the human species you may ask.
 Well society is for sure in a better place then they were yesterday thanks to Mike for creating this. Whether the bot may be inserting loads of memes into your server, or doing what it was built to do, which includes organizing bug reports for developers to easily view and manage active and inactive bugs that may exist in their project.
 ALL WITHIN A DISCORD SERVER? yEs BoSs 
