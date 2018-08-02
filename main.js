@@ -180,46 +180,48 @@ client.on('message', async message => {
             reportid = `${this.lastID}`;
             console.log(`A row has been inserted with rowid ${this.lastID}`);
             try {
-              message.channel.send({
-                  "content": "A new Bug Report has been created",
-                  "embed": {
-                    "title": "Bug Report #"+`${this.lastID}`,
-                    "description": description,
-                    "color": 5124982,
-                    "timestamp": date,
-                    "footer": {
-                      "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
-                      "text": "Bug Bot"
+            
+              client.channels.get('id', config.approval_channel).send({
+                "content": "A new Bug Report has been created",
+                "embed": {
+                  "title": "Bug Report #"+`${this.lastID}`,
+                  "description": description,
+                  "color": 5124982,
+                  "timestamp": date,
+                  "footer": {
+                    "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
+                    "text": "Bug Bot"
+                  },
+                  "thumbnail": {
+                    "url": "https://cdn.discordapp.com/embed/avatars/0.png"
+                  },
+                  "author": {
+                    "name": "Bug Bot",
+                    "url": "https://mikemadden.me",
+                    "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png"
+                  },
+                  "fields": [
+                    {
+                        "name": "Reporter",
+                        "value": reporter.toString()
                     },
-                    "thumbnail": {
-                      "url": "https://cdn.discordapp.com/embed/avatars/0.png"
+                    {
+                      "name": "Steps to reproduce",
+                      "value": steps
                     },
-                    "author": {
-                      "name": "Bug Bot",
-                      "url": "https://mikemadden.me",
-                      "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png"
+                    {
+                      "name": "Client Settings",
+                      "value": client
                     },
-                    "fields": [
-                      {
-                          "name": "Reporter",
-                          "value": reporter.toString()
-                      },
-                      {
-                        "name": "Steps to reproduce",
-                        "value": steps
-                      },
-                      {
-                        "name": "Client Settings",
-                        "value": client
-                      },
-                      {
-                        "name": "System Settings",
-                        "value": system
-                      }
+                    {
+                      "name": "System Settings",
+                      "value": system
+                    }
 
-                    ]
-                  }
-                });
+                  ]
+                }
+              })
+              
 
             } catch (e) {
                 console.log(e);
@@ -233,6 +235,8 @@ client.on('message', async message => {
 
         //reportid = reportid.parseInt()
         message.delete("15000");
+        message.channel.send('Thank you for reporting this bug')
+        message.delete('10000')
         }
     if(botcommand == 'approve' && message.channel.id != config.approval_channel){
         message.channel.send('Sorry I have been instructed to not take commands from this channel')
