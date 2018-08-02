@@ -217,7 +217,7 @@ client.on('message', async message => {
                     },
                     {
                       "name": "Client Settings",
-                      "value": client
+                      "value": clientinfo
                     },
                     {
                       "name": "System Settings",
