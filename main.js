@@ -180,8 +180,14 @@ client.on('message', async message => {
             reportid = `${this.lastID}`;
             console.log(`A row has been inserted with rowid ${this.lastID}`);
             try {
+                console.log('---------------')
+                console.log(steps)
+                console.log('----------------')
             
-              client.channels.get('id', config.approval_channel).send({
+            if(!steps){
+                steps = null;
+            }
+              client.channels.find('id', config.queue_channel).send({
                 "content": "A new Bug Report has been created",
                 "embed": {
                   "title": "Bug Report #"+`${this.lastID}`,
