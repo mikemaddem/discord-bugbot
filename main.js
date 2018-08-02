@@ -163,8 +163,8 @@ client.on('message', async message => {
         var reportinfo = reportParser(message.content);
         var reporter = message.author;
         var description = reportinfo.description;
-        var steps = reportinfo.step1+reportinfo.step2
-        var client = reportinfo.client;
+        var steps = reportinfo.step1+reportinfo.step2;
+        var clientinfo = reportinfo.client;
         var system = reportinfo.system;
         var date = new Date();
         var reportid;
