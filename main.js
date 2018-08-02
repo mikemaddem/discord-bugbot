@@ -244,10 +244,10 @@ client.on('message', async message => {
         message.channel.send('Thank you for reporting this bug')
         message.delete('10000')
         }
-    if(botcommand == 'approve' && message.channel.id != config.approval_channel){
+    if(botcommand == 'approve' && message.channel.id != config.queue_channel){
         message.channel.send('Sorry I have been instructed to not take commands from this channel')
     }
-    if(botcommand == 'approve' && message.channel.id == config.approval_channel){
+    if(botcommand == 'approve' && message.channel.id == config.queue_channel){
         // we need to add a vote to the report #, they are in the correct channel
         let bugid = args[0]
         var votes = 0;
@@ -283,10 +283,10 @@ client.on('message', async message => {
             console.log('Votes == ',votes)
         })
     }
-    if(botcommand == 'deny' && message.channel.id != config.approval_channel){
+    if(botcommand == 'deny' && message.channel.id != config.queue_channel){
         message.channel.send('Sorry I have been instructed to not take commands from this channel')
     }
-    if(botcommand == 'deny' && message.channel.id == config.approval_channel){
+    if(botcommand == 'deny' && message.channel.id == config.queue_channel){
         // we need to subtract a vote, they are in the correct channel
         let bugid = args[0]
         var votes = 0;
