@@ -278,8 +278,40 @@ client.on('message', async message => {
     }
     if(botcommand == 'deny' && message.channel.id == config.approval_channel){
         // we need to subtract a vote, they are in the correct channel
-        bugid = args[0]
+        let bugid = args[0]
+        var votes = 0;
         bugid = Number(bugid)
+        var getsql = `SELECT votes FROM bug_reports WHERE bug_id = ?`
+        
+        db.get(getsql, [bugid], (err, row) => {
+            
+            if(err){
+            message.channel.send('An error has occured with processing your report denial, please yell at my human creator to fix me')        
+            return console.error(err.message)
+            }
+            votes = row.votes
+            console.log('Votes'+votes);
+            votes = (votes === null) ? 0 : votes;
+            var newvotes = votes - 1;
+            console.log('new votes', newvotes)
+            var updatesql = `UPDATE bug_reports SET votes = ? where bug_id = ${bugid};`
+            db.run(updatesql, newvotes, function(err) {
+            if (err) {
+                return console.error(err.message);
+            }
+            console.log(`Row(s) updated: ${this.changes}`);
+
+            });
+
+            //return row
+            //? console.log(row.votes)
+            //: console.log('No row was found :( ')
+            votes =+ row.votes
+            console.log('Votes == ',votes)
+            message.channel.send('Thank you. I have updated Bug Report #'+bugid+' so that it now has '+newvotes+' total votes')
+
+            
+        })
 
     }
     if(botcommand === "purge") {
