@@ -247,7 +247,7 @@ client.on('message', async message => {
         db.get(getsql, [bugid], (err, row) => {
             
             if(err){
-            message.channel.send('An error has occured with counting your vote, please yell at my human creator to fix me')        
+            message.channel.send('An error has occured with approving this bug report, please yell at my human creator to fix me')        
             return console.error(err.message)
             }
             votes = row.votes
@@ -261,6 +261,8 @@ client.on('message', async message => {
                 return console.error(err.message);
             }
             console.log(`Row(s) updated: ${this.changes}`);
+
+            message.channel.send('Thank you. I have updated Bug Report #',bugid,' so that it now has ',newvotes,' total votes')
 
             });
 
