@@ -261,6 +261,12 @@ client.on('message', async message => {
             return console.error(err.message)
             }
             votes = row.votes
+            var reporter = row.reporter
+            var steps = row.steps
+            var clientinfo = row.client_info
+            var system = row.user_system
+            var date_submitted = row.date_submitted
+            var description = row.description
             console.log('Votes'+votes);
             votes = (votes === null) ? 0 : votes;
             var newvotes = votes + 1;
@@ -272,8 +278,69 @@ client.on('message', async message => {
             }
             console.log(`Row(s) updated: ${this.changes}`);
 
-            message.channel.send('Thank you. I have updated Bug Report #',bugid,' so that it now has ',newvotes,' total votes')
+            if(votes >= 4){
+                // the bug can be approved
+                // marked the approved field as 1
+                console.log('----')
+                console.log('bug approved')
+                console.log('----')
+                approvesql = `UPDATE bug_reports SET approved = 1 where bug_id = ${bugid};`
+                db.run(approvesql, function(err){
+                    if (err) {
+                        message.channel.send('A Database error has occured, this report should be marked as approved, the stupid humans should fix this soon')
+                        return console.log(err.message);
+                      }
+                      client.channels.find('id', config.approved_channel).send({
+                        "content": "A Bug Report has been Approved!",
+                        "embed": {
+                          "title": "Bug Report #"+bugid,
+                          "description": description,
+                          "color": 5124982,
+                          "timestamp": date_submitted,
+                          "footer": {
+                            "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
+                            "text": "Bug Bot"
+                          },
+                          "thumbnail": {
+                            "url": "https://cdn.discordapp.com/embed/avatars/0.png"
+                          },
+                          "author": {
+                            "name": "Bug Bot",
+                            "url": "https://mikemadden.me",
+                            "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png"
+                          },
+                          "fields": [
+                            {
+                                "name": "Reporter",
+                                "value": reporter.toString()
+                            },
+                            {
+                              "name": "Steps to reproduce",
+                              "value": steps
+                            },
+                            {
+                              "name": "Client Settings",
+                              "value": clientinfo
+                            },
+                            {
+                              "name": "System Settings",
+                              "value": system
+                            },
+                            {
+                                "name": "Approvers",
+                                "value": "TBD"
+                            }
+        
+                          ]
+                        }
+                      })
+                })
+            }
+            else{
+                message.channel.send('Not approved yet. Bug Report #'+bugid+' has been updated with a total of '+newvotes+' total votes')
 
+            }
+            
             });
 
             //return row
