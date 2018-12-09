@@ -43,11 +43,15 @@ mongo.connect(function(err) {
     assert.equal(null, err);
     console.log("Connected successfully to server");
 
-    const db = mongo.db(dbName);
-
-    mongo.close();
+    //mongo.close();
 });
+const db = mongo.db(dbName);
+setup_mongo();
 
+function setup_mongo(){
+    // create the required collections
+    db.createCollection("bug_reports")
+}
 
 function reportParser(command) {
     let i, l;
