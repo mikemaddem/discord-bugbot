@@ -13,21 +13,17 @@ var fs = require('fs')
 // import config
 const config = require("./config.json");
 
-// check if the db file exists
-fs.existsSync('db/main.sqlite3', function (err, file) {
-    if (err){
-        console.log('Error locating the db file')
-        fs.writeFile('db/main.sqlite3', (err) => {
-            if (err) throw err;
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
 
-            console.log("The db file was has been created!");
-        });
-        //throw err
-        }
-    else {
-    console.log('DB File found! Rejoice to all of mankind!');
-  }});
+// Connection URL
+const url = 'mongodb://localhost:27017';
 
+// Database Name
+const dbName = 'bugbot';
+
+// Create a new MongoClient
+const mongo = new MongoClient(url);
 
 var commands = [];
 
@@ -42,16 +38,16 @@ startupsql = `CREATE TABLE IF NOT EXISTS bug_reports (
     votes integer DEFAULT 0,
     date_submitted integer NOT NULL);`;
 
-const sqlite3 = require('sqlite3').verbose();
-let db = new sqlite3.Database('./db/main.sqlite3', sqlite3.OPEN_READWRITE, (err) => {
-    if (err) {
-        throw err
-    }
-    else{
-        db.run(startupsql);
-    }
-    console.log('Connected to the bugs SQlite database.');
+// Use connect method to connect to the Server
+mongo.connect(function(err) {
+    assert.equal(null, err);
+    console.log("Connected successfully to server");
+
+    const db = mongo.db(dbName);
+
+    client.close();
 });
+
 
 function reportParser(command) {
     let i, l;
