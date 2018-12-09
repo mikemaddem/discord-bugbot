@@ -102,6 +102,22 @@ function reportParser(command) {
     return output;
 }
 
+function insert_bugreport(reporter, description, steps, clientinfo, system, date) {
+    try {
+        const inserted = db.bug_reports.insertOne(
+            {
+                reporter: reporter, description: description, steps: steps,
+                client_info: clientinfo, system_info: system, date: date
+            }
+        );
+        return inserted[_id];
+    }
+    catch (e){
+        console.log(e);
+    }
+
+}
+
 
 commands.push('src');
 commands.push('source');
