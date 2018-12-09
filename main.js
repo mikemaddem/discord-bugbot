@@ -45,7 +45,7 @@ mongo.connect(function(err) {
 
     const db = mongo.db(dbName);
 
-    client.close();
+    mongo.close();
 });
 
 
@@ -130,7 +130,7 @@ client.on('message', async message => {
 
     if (botcommand == 'src' || botcommand == 'source') {
         // Send "pong" to the same channel
-        message.channel.send('https://github.com/mikemaddem/discord-bugjs');
+        message.channel.send('https://github.com/mikemaddem/discord-bugbot');
     }
     if(botcommand == 'commands' || botcommand == 'command'){
         var comout = ""
