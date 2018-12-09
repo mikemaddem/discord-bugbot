@@ -184,79 +184,66 @@ client.on('message', async message => {
         console.log(reporter+" just submitted a report with the following info ");
         console.log(reportinfo);
         var insert = `INSERT INTO bug_reports(reporter, description, steps, client_info, user_system, date_submitted) VALUES("${reporter}", "${description}", "${steps}", "${client}", "${system}", "${date}")`;
-        db.run(insert, function(err) {
-            if (err) {
-              message.channel.send('A Database error has occured, the stupid humans should fix this soon')
-              return console.log(err.message);
-            }
-            // get the last insert id
-            reportid = `${this.lastID}`;
-            console.log(`A row has been inserted with rowid ${this.lastID}`);
-            try {
-                console.log('---------------')
-                console.log(steps)
-                console.log('----------------')
+        mikeid = insert_bugreport(reporter, description, steps, clientinfo, system, date);
+        console.log(`A row has been inserted with rowid ${this.lastID}`);
+        try {
+            console.log('---------------')
+            console.log(steps)
+            console.log('----------------')
             
             if(!steps){
                 steps = null;
             }
-              client.channels.find('id', config.queue_channel).send({
-                "content": "A new Bug Report has been created",
-                "embed": {
-                  "title": "Bug Report #"+`${this.lastID}`,
-                  "description": description,
-                  "color": 5124982,
-                  "timestamp": date,
-                  "footer": {
-                    "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
-                    "text": "Bug Bot"
-                  },
-                  "thumbnail": {
-                    "url": "https://cdn.discordapp.com/embed/avatars/0.png"
-                  },
-                  "author": {
-                    "name": "Bug Bot",
-                    "url": "https://mikemadden.me",
-                    "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png"
-                  },
-                  "fields": [
-                    {
-                        "name": "Reporter",
-                        "value": reporter.toString()
-                    },
-                    {
-                      "name": "Steps to reproduce",
-                      "value": steps
-                    },
-                    {
-                      "name": "Client Settings",
-                      "value": clientinfo
-                    },
-                    {
-                      "name": "System Settings",
-                      "value": system
-                    }
-
-                  ]
+          client.channels.find('id', config.queue_channel).send({
+            "content": "A new Bug Report has been created",
+            "embed": {
+              "title": "Bug Report #"+`${this.lastID}`,
+              "description": description,
+              "color": 5124982,
+              "timestamp": date,
+              "footer": {
+                "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
+                "text": "Bug Bot"
+              },
+              "thumbnail": {
+                "url": "https://cdn.discordapp.com/embed/avatars/0.png"
+              },
+              "author": {
+                "name": "Bug Bot",
+                "url": "https://mikemadden.me",
+                "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png"
+              },
+              "fields": [
+                {
+                    "name": "Reporter",
+                    "value": reporter.toString()
+                },
+                {
+                  "name": "Steps to reproduce",
+                  "value": steps
+                },
+                {
+                  "name": "Client Settings",
+                  "value": clientinfo
+                },
+                {
+                  "name": "System Settings",
+                  "value": system
                 }
-              })
-              
+
+              ]
+            }
+          })
 
             } catch (e) {
                 console.log(e);
                 message.channel.send("An error has occured, and I've notified the humans so they can fix it")
             }
-        });
-        //var id = db.lastInsertRowId;
-        // grab the value of the the report id based on the last one created
-        //var bugid = db.run(`SELECT bug_id FROM bug_reports WHERE bug_id = (SELECT MAX(bug_id) FROM bug_reports)`);
-        //console.log('bugid = '+bugid)
-
-        //reportid = reportid.parseInt()
-        message.delete("15000");
-        message.channel.send('Thank you for reporting this bug')
-        message.delete('10000')
         }
+        message.delete("15000");
+        message.channel.send('Thank you for reporting this bug');
+        message.delete('10000');
+
     if(botcommand == 'approve' && message.channel.id != config.queue_channel){
         message.channel.send('Sorry I have been instructed to not take commands from this channel')
     }
