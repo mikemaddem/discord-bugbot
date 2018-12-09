@@ -142,7 +142,7 @@ client.on('message', async message => {
     if (botcommand == 'about'){
         message.channel.send('A wise handsome young man by the name of Michael Madden is my creator, he created me' +
             'to help other developers organize the bugs in their awful code.');
-        message.channel.send('Check him out @ mikemadden.me')
+        message.channel.send('Check him out @ mikemadden.me or @nfm_mike on twitter')
     }
     if (botcommand == 'meme'){
         message.channel.send(':flag_ru: I have strict orders to stop memes :flag_ru: ');
@@ -153,6 +153,7 @@ client.on('message', async message => {
     }
     if (botcommand == 'report' && message.channel.id != config.report_channel){
         message.channel.send('Sorry I have been instructed to not take commands from this channel')
+        message.channel.send('Please ensure you are using this command from the correct channel')
     }
     if (botcommand == 'report' && message.channel.id == config.report_channel){
         // ok shit we have to do some for real shit.
