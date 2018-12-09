@@ -13,7 +13,7 @@ Someone remind me to fill this out later. But I'd appreciate any help.
 
 # Roadmap
 * Trello integration
-* Local DB Storage (SQLITE)
+* Local DB Storage - Now built on MongoDB
 * Unique Ticket ID & Objects
 
 # Setup
