@@ -4,22 +4,29 @@ Well society is for sure in a better place then they were yesterday thanks to Mi
 ALL WITHIN A DISCORD SERVER? yEs BoSs 
 
 # Requirements
-* Node > v6.0.0
-* Discord
+* Node > v8.0.0
+* Discord with Discord server that you have permissions to
 * A somewhat functioning computer with access to the internet
 
 # Contributing
-Someone remind me to fill this out later. But I'd appreciate any help.
+I do greatly appreciate any and all help that I can receive on this project, feel free to
+fork and help close up some issues or make progress on some roadmap items. When creating pull requests
+please give me some time to merge and properly review everything, I am busy in my
+life with school, many projects, and work. 
 
 # Roadmap
-* Trello integration
-* Local DB Storage (SQLITE)
-* Unique Ticket ID & Objects
+* Trello integration (NOT STARTED)
+* Local DB Storage - Now built on MongoDB (IN PROGRESS)
+* Unique Ticket ID & Objects (IN PROGRESS)
+* User Suggestions Voting (NOT STARTED)
+* Better MongoDB instance handling - allow remote hosts with config (NOT STARTED)
 
 # Setup
 To get the bot to join the server you need to go to this link... Be sure to put your bot id in the 
 place of ID OF YOUR BOT
-discordapp.com/oauth2/authorize?client_id=ID OF YOUR BOT&scope=bot&permissions=0
+
+```discordapp.com/oauth2/authorize?client_id=ID OF YOUR BOT&scope=bot&permissions=0```
+
 
 * Clone/checkout from the latest release
 * Install requirements with ```npm install```

@@ -9,3 +9,4 @@ node_modules/*
 db/main.sqlite3
 *.sqlite3
 db\main.sqlite3
+\.idea/
